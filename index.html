@@ -5,7 +5,7 @@
   <meta name="description" content="A polished Family Chore Manager for Michelle's family—with drag & drop, persistence, and custom print options.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Michelle's Family Chore Manager</title>
-  <!-- Link to the external CSS file (fixing typo in filename) -->
+  <!-- Link to the external CSS file -->
   <link rel="stylesheet" href="css/styles.css">
   <!-- Nunito font for better readability -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -62,7 +62,7 @@
         </div>
       </div>
       
-      <!-- Right column: Analytics & Print -->
+      <!-- Right column: Analytics & Reports -->
       <div class="analytics-panel">
         <div class="panel-header">
           <h2>Analytics & Reports</h2>
@@ -113,13 +113,58 @@
       </div>
     </div>
     
+    <!-- NEW SECTION: Full Weekly Agenda View -->
+    <div class="weekly-agenda-section">
+      <div class="panel-header">
+        <h2>Weekly Family Chore Agenda</h2>
+      </div>
+      <div class="weekly-agenda-container">
+        <!-- Monday -->
+        <div class="weekly-day-header">Monday</div>
+        <div class="weekly-agenda-grid" id="mondayAgenda">
+          <!-- Kids' cards for Monday will be dynamically generated -->
+        </div>
+        
+        <!-- Tuesday -->
+        <div class="weekly-day-header">Tuesday</div>
+        <div class="weekly-agenda-grid" id="tuesdayAgenda">
+          <!-- Kids' cards for Tuesday will be dynamically generated -->
+        </div>
+        
+        <!-- Wednesday -->
+        <div class="weekly-day-header">Wednesday</div>
+        <div class="weekly-agenda-grid" id="wednesdayAgenda">
+          <!-- Kids' cards for Wednesday will be dynamically generated -->
+        </div>
+        
+        <!-- Thursday -->
+        <div class="weekly-day-header">Thursday</div>
+        <div class="weekly-agenda-grid" id="thursdayAgenda">
+          <!-- Kids' cards for Thursday will be dynamically generated -->
+        </div>
+        
+        <!-- Friday -->
+        <div class="weekly-day-header">Friday</div>
+        <div class="weekly-agenda-grid" id="fridayAgenda">
+          <!-- Kids' cards for Friday will be dynamically generated -->
+        </div>
+        
+        <!-- Weekend -->
+        <div class="weekly-day-header">Weekend</div>
+        <div class="weekly-agenda-grid" id="weekendAgenda">
+          <!-- Kids' cards for weekend will be dynamically generated -->
+        </div>
+      </div>
+    </div>
+    
     <footer>
-      <p>Made with ❤️ for Michelle | Version 2.0</p>
+      <p>Made with ❤️ for Michelle | Version 2.1</p>
     </footer>
   </div>
   
   <!-- Link to external JavaScript files -->
   <script src="js/main.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/weekly-agenda.js"></script>
 </body>
 </html>
