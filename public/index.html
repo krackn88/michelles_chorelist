@@ -1,1 +1,89 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michelle's Chore List</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
+    <script>
+        const COZI_ICALENDAR_FEED_URL = 'https://rest.cozi.com/api/ext/1103/b4aed401-01a9-45e7-8082-4d88db3fa35a/icalendar/feed/feed.ics';
+
+        const fetchCoziCalendarEvents = async () => {
+            try {
+                const response = await axios.get(COZI_ICALENDAR_FEED_URL);
+                const parsedEvents = parseICalendar(response.data);
+
+                return parsedEvents.map(event => ({
+                    id: event.uid,
+                    title: event.summary,
+                    start: new Date(event.start),
+                    end: new Date(event.end),
+                    location: event.location,
+                    notes: event.description,
+                    type: 'cozi'
+                }));
+            } catch (error) {
+                console.error('Error fetching Cozi calendar events:', error);
+                return [];
+            }
+        };
+
+        const parseICalendar = (icsData) => {
+            const jcalData = ICAL.parse(icsData);
+            const comp = new ICAL.Component(jcalData);
+            const vevents = comp.getAllSubcomponents('vevent');
+
+            return vevents.map(vevent => {
+                const event = new ICAL.Event(vevent);
+                return {
+                    uid: event.uid,
+                    summary: event.summary,
+                    start: event.startDate.toJSDate(),
+                    end: event.endDate.toJSDate(),
+                    location: event.location,
+                    description: event.description
+                };
+            });
+        };
+
+        const displayEvents = async () => {
+            const events = await fetchCoziCalendarEvents();
+            const eventList = document.getElementById('event-list');
+
+            events.forEach(event => {
+                const eventItem = document.createElement('div');
+                eventItem.className = 'event-item';
+                eventItem.innerHTML = `
+                    <h3>${event.title}</h3>
+                    <p><strong>Start:</strong> ${event.start}</p>
+                    <p><strong>End:</strong> ${event.end}</p>
+                    <p><strong>Location:</strong> ${event.location}</p>
+                    <p><strong>Notes:</strong> ${event.notes}</p>
+                `;
+                eventList.appendChild(eventItem);
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', displayEvents);
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Michelle's Chore List</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Calendar Events</h2>
+            <div id="event-list">
+                <!-- Calendar events will be dynamically loaded here -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Michelle's Chore List</p>
+    </footer>
+</body>
+</html>
