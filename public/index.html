@@ -1,153 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Michelle's Chore List</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
-    <script>
-        const COZI_ICALENDAR_FEED_URL = 'https://rest.cozi.com/api/ext/1103/b4aed401-01a9-45e7-8082-4d88db3fa35a/icalendar/feed/feed.ics';
-
-        const fetchCoziCalendarEvents = async () => {
-            try {
-                const response = await axios.get(COZI_ICALENDAR_FEED_URL);
-                const parsedEvents = parseICalendar(response.data);
-
-                return parsedEvents.map(event => ({
-                    id: event.uid,
-                    title: event.summary,
-                    start: new Date(event.start),
-                    end: new Date(event.end),
-                    location: event.location,
-                    notes: event.description,
-                    type: 'cozi'
-                }));
-            } catch (error) {
-                console.error('Error fetching Cozi calendar events:', error);
-                return [];
-            }
-        };
-
-        const parseICalendar = (icsData) => {
-            const jcalData = ICAL.parse(icsData);
-            const comp = new ICAL.Component(jcalData);
-            const vevents = comp.getAllSubcomponents('vevent');
-
-            return vevents.map(vevent => {
-                const event = new ICAL.Event(vevent);
-                return {
-                    uid: event.uid,
-                    summary: event.summary,
-                    start: event.startDate.toJSDate(),
-                    end: event.endDate.toJSDate(),
-                    location: event.location,
-                    description: event.description
-                };
-            });
-        };
-
-        const displayEvents = async (page = 1, perPage = 5) => {
-            const events = await fetchCoziCalendarEvents();
-            const eventList = document.getElementById('event-list');
-            eventList.innerHTML = '';
-
-            const start = (page - 1) * perPage;
-            const end = start + perPage;
-            const paginatedEvents = events.slice(start, end);
-
-            paginatedEvents.forEach(event => {
-                const eventItem = document.createElement('div');
-                eventItem.className = 'event-item';
-                eventItem.innerHTML = `
-                    <h3>${event.title}</h3>
-                    <p><strong>Start:</strong> ${event.start}</p>
-                    <p><strong>End:</strong> ${event.end}</p>
-                    <p><strong>Location:</strong> ${event.location}</p>
-                    <p><strong>Notes:</strong> ${event.notes}</p>
-                `;
-                eventList.appendChild(eventItem);
-            });
-
-            setupPagination(events.length, page, perPage);
-        };
-
-        const setupPagination = (totalItems, currentPage, itemsPerPage) => {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                const pageItem = document.createElement('span');
-                pageItem.className = 'page-item';
-                pageItem.textContent = i;
-                if (i === currentPage) {
-                    pageItem.classList.add('active');
-                }
-                pageItem.addEventListener('click', () => displayEvents(i, itemsPerPage));
-                pagination.appendChild(pageItem);
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', () => displayEvents());
-    </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: #4CAF50;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        main {
-            padding: 1rem;
-        }
-        .event-item {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 5px;
-        }
-        .page-item {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            margin: 0.5rem;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .page-item.active {
-            background: #4CAF50;
-            color: white;
-        }
-        #pagination {
-            text-align: center;
-            margin-top: 1rem;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Welcome to Michelle's Chore List</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Calendar Events</h2>
-            <div id="event-list">
-                <!-- Calendar events will be dynamically loaded here -->
-            </div>
-            <div id="pagination">
-                <!-- Pagination controls will be dynamically loaded here -->
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Michelle's Chore List</p>
-    </footer>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Family Chore Manager with Cozi Calendar integration"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Family Chore Manager</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>

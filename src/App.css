@@ -1,0 +1,316 @@
+/* Base styles */
+:root {
+  --primary-color: #4a6da7;
+  --secondary-color: #f8b195;
+  --accent-color: #f67280;
+  --light-color: #f9f7f7;
+  --dark-color: #2d3e50;
+  --success-color: #5cb85c;
+  --warning-color: #f0ad4e;
+  --danger-color: #d9534f;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  line-height: 1.6;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header and Navigation */
+header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  box-shadow: var(--box-shadow);
+}
+
+header h1 {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+nav a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+nav a.active {
+  background-color: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+/* Main content */
+main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Footer */
+footer {
+  background-color: var(--dark-color);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}
+
+/* Dashboard */
+.dashboard-section {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: var(--box-shadow);
+}
+
+.dashboard-section h2 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
+}
+
+.events-container, .chores-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.event-card, .chore-card {
+  background-color: var(--light-color);
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.event-card:hover, .chore-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Calendar page */
+.calendar-page {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+}
+
+.calendar-container {
+  margin-top: 1.5rem;
+}
+
+.calendar-event {
+  display: flex;
+  margin-bottom: 1.5rem;
+  background-color: var(--light-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-date {
+  width: 100px;
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.event-details {
+  flex: 1;
+  padding: 1rem;
+}
+
+.event-details h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+/* Chore Manager */
+.chore-manager h1, .kids-manager h1 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.add-chore-form, .add-kid-form {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: var(--box-shadow);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #3a5a8a;
+}
+
+.chore-list {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+table th, table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+table th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.delete-btn {
+  background-color: var(--danger-color);
+}
+
+.delete-btn:hover {
+  background-color: #c9302c;
+}
+
+/* Kids Manager */
+.kids-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.kid-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.kid-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
+}
+
+.kid-chores {
+  margin-top: 1rem;
+}
+
+.kid-chores h4 {
+  margin-bottom: 0.5rem;
+}
+
+.kid-chores ul {
+  list-style-position: inside;
+}
+
+.kid-chores li {
+  padding: 0.25rem 0;
+}
+
+.kid-chores li.completed {
+  color: var(--success-color);
+  text-decoration: line-through;
+}
+
+/* Loading and error states */
+.loading, .error {
+  padding: 2rem;
+  text-align: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.error {
+  color: var(--danger-color);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .events-container, .chores-container, .kids-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .calendar-event {
+    flex-direction: column;
+  }
+  
+  .event-date {
+    width: 100%;
+    padding: 0.5rem;
+  }
+  
+  nav {
+    flex-wrap: wrap;
+  }
+}
