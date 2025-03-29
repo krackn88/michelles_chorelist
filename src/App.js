@@ -294,7 +294,7 @@ const Kids = () => {
                   <ul>
                     {kidChores.map(chore => (
                       <li key={chore.id} className={chore.completed ? 'completed' : ''}>
-                        {chore.task} {chore.completed ? '?' : ''}
+                        {chore.task} {chore.completed ? '' : ''}
                       </li>
                     ))}
                   </ul>
