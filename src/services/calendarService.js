@@ -1,33 +1,44 @@
-import ical from 'node-ical';
+/**
+ * Calendar Service
+ * Fetches and processes calendar data from the Cozi Calendar integration
+ */
 
-const COZI_CALENDAR_URL = 'https://rest.cozi.com/api/ext/1103/b4aed401-01a9-45e7-8082-4d88db3fa35a/icalendar/feed/feed.ics';
+// Load the pre-fetched calendar data from the public directory
+export const fetchCalendarEvents = async () => {
+  try {
+    const response = await fetch('/calendar-data.json');
+    if (!response.ok) {
+      throw new Error(Failed to fetch calendar data: );
+    }
+    
+    const events = await response.json();
+    return events;
+  } catch (error) {
+    console.error('Error fetching calendar events:', error);
+    throw error;
+  }
+};
 
-export const fetchCalendarEvents = () => {
-  return new Promise((resolve, reject) => {
-    ical.fromURL(COZI_CALENDAR_URL, {}, (err, data) => {
-      if (err) {
-        console.error('Error fetching calendar events:', err);
-        reject(err);
-        return;
-      }
-      
-      const events = [];
-      
-      for (let k in data) {
-        if (data[k].type === 'VEVENT') {
-          const event = data[k];
-          events.push({
-            id: event.uid,
-            title: event.summary,
-            start: event.start,
-            end: event.end || event.start,
-            description: event.description,
-            location: event.location
-          });
-        }
-      }
-      
-      resolve(events);
-    });
-  });
+// Format a date for display
+export const formatDate = (dateString) => {
+  if (!dateString) return 'No date';
+  
+  const date = new Date(dateString);
+  return date.toLocaleString();
+};
+
+// Get upcoming events (next 7 days)
+export const getUpcomingEvents = (events) => {
+  if (!events || !Array.isArray(events)) return [];
+  
+  const now = new Date();
+  const nextWeek = new Date();
+  nextWeek.setDate(now.getDate() + 7);
+  
+  return events
+    .filter(event => {
+      const eventDate = new Date(event.start);
+      return eventDate >= now && eventDate <= nextWeek;
+    })
+    .sort((a, b) => new Date(a.start) - new Date(b.start));
 };
