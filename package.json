@@ -2,7 +2,10 @@
   "name": "michelles-family-chore-manager",
   "version": "1.0.0",
   "description": "A family chore manager with Cozi calendar integration",
-  "main": "index.js",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "netlify dev",
     "build": "netlify build",
@@ -10,6 +13,7 @@
   },
   "dependencies": {
     "ical": "^0.8.0",
+    "michelles-family-chore-manager": "file:",
     "node-fetch": "^2.6.7"
   },
   "devDependencies": {

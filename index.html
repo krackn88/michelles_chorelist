@@ -2,189 +2,562 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="A polished Family Chore Manager for Michelle's family—with drag & drop, persistence, and custom print options.">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Michelle's Family Chore Manager</title>
-  <!-- Link to the external CSS file -->
+  <meta name="description" content="Family Chore Manager - Organize and track family chores">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Chore Manager</title>
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styles.css">
-  <!-- Nunito font for better readability -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Chart.js for visualizations -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Bootstrap for responsive design -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-  <div class="main-container">
-    <header class="app-header">
-      <div class="logo-container">
-        <img src="https://img.icons8.com/cotton/64/000000/checklist--v2.png" alt="Chore Manager Logo" class="logo">
-        <h1>Michelle's Family Chore Manager</h1>
-      </div>
-      <div class="header-controls">
-        <div class="kid-selector-container">
-          <label for="kidSelector">Select Child:</label>
-          <select id="kidSelector" class="styled-select">
-            <option value="Ember">Ember (14)</option>
-            <option value="Lilly">Lilly (10)</option>
-            <option value="Levi">Levi (9)</option>
-            <option value="Eva">Eva (9)</option>
-            <option value="Elijah">Elijah (7)</option>
-            <option value="Kallie">Kallie (3)</option>
-          </select>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="assets/logo.svg" alt="Family Chore Manager Logo">
         </div>
-        <div class="cozi-integration">
-          <button id="coziConfigBtn" class="btn-cozi">
-            <i class="fas fa-calendar-alt"></i> Cozi Calendar
+        <div class="app-title">Family Chore Manager</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="#dashboard" class="nav-link active" data-section="dashboard">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#chores" class="nav-link" data-section="chores">
+              <i class="fas fa-tasks"></i>
+              <span>Chores</span>
+            </a>
+          </li>
+          <li>
+            <a href="#calendar" class="nav-link" data-section="calendar">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Calendar</span>
+            </a>
+          </li>
+          <li>
+            <a href="#family" class="nav-link" data-section="family">
+              <i class="fas fa-users"></i>
+              <span>Family</span>
+            </a>
+          </li>
+          <li>
+            <a href="#reports" class="nav-link" data-section="reports">
+              <i class="fas fa-chart-bar"></i>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li>
+            <a href="#settings" class="nav-link" data-section="settings">
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="cozi-integration sidebar-footer">
+        <button id="coziSyncBtn" class="btn btn-outline-secondary btn-sm">
+          <i class="fas fa-sync"></i> Sync with Cozi
+        </button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="top-nav">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="page-title" id="currentPageTitle">Dashboard</div>
+        
+        <div class="top-nav-actions">
+          <button class="btn btn-primary" id="addChoreButton">
+            <i class="fas fa-plus"></i> Add Chore
           </button>
         </div>
       </div>
-    </header>
-    
-    <!-- Cozi Configuration Modal -->
-    <div id="coziConfigModal" class="modal">
+      
+      <div class="content-area">
+        <!-- Dashboard Section -->
+        <section class="section active" id="dashboard">
+          <div class="dashboard-header">
+            <h1>Family Dashboard</h1>
+            <div class="date-display" id="currentDate"></div>
+          </div>
+          
+          <div class="dashboard-stats">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="totalChores">0</div>
+                <div class="stat-label">Total Chores</div>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="completedChores">0</div>
+                <div class="stat-label">Completed Today</div>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-percentage"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="completionRate">0%</div>
+                <div class="stat-label">Completion Rate</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="dashboard-progress">
+            <h2>Today's Progress</h2>
+            <div class="dashboard-progress-bar">
+              <div class="progress-value" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <div class="dashboard-grid">
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Family Members</h2>
+              </div>
+              <div class="card-body">
+                <div id="familyStats" class="family-stats-container">
+                  <!-- Family member stats will be rendered here -->
+                </div>
+              </div>
+            </div>
+            
+            <div class="dashboard-card">
+              <div class="card-header">
+                <h2>Upcoming Chores</h2>
+              </div>
+              <div class="card-body">
+                <div id="upcomingChores" class="upcoming-chores-container">
+                  <!-- Upcoming chores will be rendered here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Chores Section -->
+        <section class="section" id="chores">
+          <div class="section-header">
+            <h1>Chores</h1>
+            <div class="section-actions">
+              <div class="filter-sort-container">
+                <div class="filter-group">
+                  <label for="choreFilter">Filter:</label>
+                  <select id="choreFilter" class="form-select">
+                    <option value="all">All Chores</option>
+                    <option value="completed">Completed</option>
+                    <option value="incomplete">Incomplete</option>
+                  </select>
+                </div>
+                
+                <div class="sort-group">
+                  <label for="choreSort">Sort By:</label>
+                  <select id="choreSort" class="form-select">
+                    <option value="name">Name</option>
+                    <option value="dueDate">Due Date</option>
+                    <option value="points">Points</option>
+                    <option value="frequency">Frequency</option>
+                  </select>
+                </div>
+              </div>
+              
+              <button class="btn btn-primary btn-add-chore">
+                <i class="fas fa-plus"></i> Add Chore
+              </button>
+            </div>
+          </div>
+          
+          <div class="chores-container" id="choresList">
+            <!-- Chores will be rendered here -->
+          </div>
+        </section>
+        
+        <!-- Calendar Section -->
+        <section class="section" id="calendar">
+          <div class="section-header">
+            <h1>Family Calendar</h1>
+            <div class="section-actions">
+              <button class="btn btn-primary" id="refreshCalendarBtn">
+                <i class="fas fa-sync"></i> Refresh
+              </button>
+            </div>
+          </div>
+          
+          <div class="calendar-container">
+            <div id="familyCalendar"></div>
+          </div>
+        </section>
+        
+        <!-- Family Section -->
+        <section class="section" id="family">
+          <div class="section-header">
+            <h1>Family Members</h1>
+            <div class="section-actions">
+              <button class="btn btn-primary" id="addFamilyMemberBtn">
+                <i class="fas fa-user-plus"></i> Add Member
+              </button>
+            </div>
+          </div>
+          
+          <div class="family-members-container" id="familyMembersList">
+            <!-- Family members will be rendered here -->
+          </div>
+        </section>
+        
+        <!-- Reports Section -->
+        <section class="section" id="reports">
+          <div class="section-header">
+            <h1>Reports</h1>
+            <div class="section-actions">
+              <div class="date-range-picker">
+                <input type="date" id="reportStartDate" class="form-control">
+                <span>to</span>
+                <input type="date" id="reportEndDate" class="form-control">
+                <button class="btn btn-primary" id="generateReportBtn">
+                  <i class="fas fa-chart-line"></i> Generate
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="reports-container">
+            <div class="report-card">
+              <h2>Chore Completion Rate</h2>
+              <div class="chart-container">
+                <canvas id="completionRateChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="report-card">
+              <h2>Points Earned</h2>
+              <div class="chart-container">
+                <canvas id="pointsEarnedChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="report-card">
+              <h2>Chores by Family Member</h2>
+              <div class="chart-container">
+                <canvas id="choresByMemberChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Settings Section -->
+        <section class="section" id="settings">
+          <div class="section-header">
+            <h1>Settings</h1>
+          </div>
+          
+          <div class="settings-container">
+            <div class="settings-card">
+              <h2>Display Settings</h2>
+              <div class="settings-form">
+                <div class="form-group">
+                  <label for="themeSelect">Theme:</label>
+                  <select id="themeSelect" class="form-select">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="defaultViewSelect">Default View:</label>
+                  <select id="defaultViewSelect" class="form-select">
+                    <option value="dashboard">Dashboard</option>
+                    <option value="chores">Chores</option>
+                    <option value="calendar">Calendar</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="settings-card">
+              <h2>Cozi Integration</h2>
+              <div class="settings-form">
+                <button class="btn btn-primary" id="configureCoziBtn">
+                  <i class="fas fa-cog"></i> Configure Cozi
+                </button>
+              </div>
+            </div>
+            
+            <div class="settings-card">
+              <h2>Data Management</h2>
+              <div class="settings-form">
+                <div class="btn-group">
+                  <button class="btn btn-primary" id="exportDataBtn">
+                    <i class="fas fa-file-export"></i> Export Data
+                  </button>
+                  <button class="btn btn-secondary" id="importDataBtn">
+                    <i class="fas fa-file-import"></i> Import Data
+                  </button>
+                </div>
+                <div class="form-group mt-3">
+                  <button class="btn btn-danger" id="clearDataBtn">
+                    <i class="fas fa-trash"></i> Clear All Data
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Modals -->
+  
+  <!-- Add Chore Modal -->
+  <div class="modal fade" id="addChoreModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>Cozi Calendar Integration</h3>
-          <span class="close-modal">&times;</span>
+          <h5 class="modal-title">Add New Chore</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addChoreForm">
+            <div class="mb-3">
+              <label for="choreTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="choreTitle" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="choreDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="choreDescription" rows="3"></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="choreFrequency" class="form-label">Frequency</label>
+              <select class="form-select" id="choreFrequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="choreDueDate" class="form-label">Due Date (Optional)</label>
+              <input type="date" class="form-control" id="choreDueDate">
+            </div>
+            
+            <div class="mb-3">
+              <label for="choreAssignee" class="form-label">Assign To</label>
+              <select class="form-select" id="choreAssignee">
+                <option value="none">Unassigned</option>
+                <!-- Family members will be added dynamically -->
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="chorePoints" class="form-label">Points</label>
+              <input type="number" class="form-control" id="chorePoints" min="1" value="1">
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Add Chore</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Chore Modal -->
+  <div class="modal fade" id="editChoreModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Chore</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editChoreForm">
+            <div class="mb-3">
+              <label for="editChoreTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="editChoreTitle" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="editChoreDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="editChoreDescription" rows="3"></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="editChoreFrequency" class="form-label">Frequency</label>
+              <select class="form-select" id="editChoreFrequency">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="editChoreDueDate" class="form-label">Due Date (Optional)</label>
+              <input type="date" class="form-control" id="editChoreDueDate">
+            </div>
+            
+            <div class="mb-3">
+              <label for="editChoreAssignee" class="form-label">Assign To</label>
+              <select class="form-select" id="editChoreAssignee">
+                <option value="none">Unassigned</option>
+                <!-- Family members will be added dynamically -->
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="editChorePoints" class="form-label">Points</label>
+              <input type="number" class="form-control" id="editChorePoints" min="1" value="1">
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Cozi Configuration Modal -->
+  <div class="modal fade" id="coziConfigModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Configure Cozi Integration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form id="coziConfigForm">
-            <div class="form-group">
-              <label for="coziUrl">Cozi Calendar URL:</label>
-              <input type="text" id="coziUrl" class="form-control" value="https://rest.cozi.com/api/ext/1103/b4aed401-01a9-45e7-8082-4d88db3fa35a/icalendar/feed/feed.ics" placeholder="Enter your Cozi URL">
-              <small class="form-text text-muted">Your personal Cozi iCalendar feed URL</small>
+            <div class="mb-3">
+              <label for="coziUrl" class="form-label">Cozi Calendar URL</label>
+              <input type="url" class="form-control" id="coziUrl" placeholder="https://calendar.cozi.com/calendar/ical/..." required>
+              <div class="form-text">Paste the iCal URL from your Cozi account.</div>
             </div>
-            <div class="form-actions">
-              <button type="submit" id="saveCoziConfig" class="btn-primary">Save & Connect</button>
-              <button type="button" id="testCoziConnection" class="btn-secondary">Test Connection</button>
+            
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="useProxy" checked>
+              <label class="form-check-label" for="useProxy">Use proxy for access (helps avoid 403 errors)</label>
+            </div>
+            
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="autoSync">
+              <label class="form-check-label" for="autoSync">Auto-sync on startup</label>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-secondary" id="testCoziConnectionBtn">Test Connection</button>
+              <button type="submit" class="btn btn-primary">Save Configuration</button>
             </div>
           </form>
-          <div id="coziConnectionStatus"></div>
         </div>
       </div>
     </div>
-    
-    <div class="error-container" id="errorContainer"></div>
-    
-    <!-- Main content area -->
-    <div class="content-grid">
-      <!-- Left column: Chore Management -->
-      <div class="chore-management-panel">
-        <div class="panel-header">
-          <h2>Manage Chores</h2>
-        </div>
-        
-        <!-- New Chore Input Area -->
-        <div id="newChoreContainer">
-          <input type="text" id="newChoreInput" placeholder="Add new chore..." autocomplete="off">
-          <select id="scheduleSelect" class="styled-select">
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-          <button id="addChoreButton" class="btn-primary">Add</button>
-        </div>
-        
-        <!-- Chore List -->
-        <div class="chore-list-container">
-          <h3>Current Chores</h3>
-          <ul id="choreList">
-            <!-- Dynamically rendered chores appear here -->
-          </ul>
-        </div>
-      </div>
-      
-      <!-- Right column: Analytics & Reports -->
-      <div class="analytics-panel">
-        <div class="panel-header">
-          <h2>Analytics & Reports</h2>
-        </div>
-        
-        <!-- Chart Section -->
-        <div class="chart-section">
-          <div class="chart-container">
-            <canvas id="completionChart"></canvas>
-          </div>
-          <div class="chart-container">
-            <canvas id="choreTypeChart"></canvas>
-          </div>
-          <div class="chart-container">
-            <canvas id="coziEventsChart"></canvas>
-          </div>
-        </div>
-        
-        <!-- Print Options -->
-        <div class="print-options-panel">
-          <h3>Print Options</h3>
-          <div class="print-form">
-            <div class="form-row">
-              <label for="printFilter">Filter Chores:</label>
-              <select id="printFilter" class="styled-select">
-                <option value="all">All Chores</option>
-                <option value="daily">Daily Chores</option>
-                <option value="weekly">Weekly Chores</option>
-                <option value="monthly">Monthly Chores</option>
-                <option value="completed">Completed Chores</option>
-                <option value="incomplete">Incomplete Chores</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <label for="printFormat">Print Format:</label>
-              <select id="printFormat" class="styled-select">
-                <option value="standard">Standard Chore List</option>
-                <option value="agenda">Weekly Agenda</option>
-                <option value="checklist">Checklist</option>
-              </select>
-            </div>
-            <div class="form-row">
-              <button id="printButton" class="btn-success">
-                <i class="fas fa-print"></i> Print
-              </button>
-              <button id="resetButton" class="btn-warning">Reset All Completion Status</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Enhanced Weekly Agenda View -->
-    <div class="weekly-agenda-section">
-      <div class="panel-header">
-        <h2>Weekly Family Agenda</h2>
-        <div class="agenda-controls">
-          <button id="prevWeekBtn" class="btn-nav"><i class="fas fa-chevron-left"></i> Previous Week</button>
-          <span id="currentWeekDisplay" class="current-week-display">March 29 - April 4, 2025</span>
-          <button id="nextWeekBtn" class="btn-nav">Next Week <i class="fas fa-chevron-right"></i></button>
-          <button id="refreshCoziBtn" class="btn-refresh"><i class="fas fa-sync-alt"></i> Refresh Cozi</button>
-        </div>
-      </div>
-      <div class="weekly-agenda-tabs">
-        <button class="tab-button active" data-view="all">All Activities</button>
-        <button class="tab-button" data-view="chores">Chores Only</button>
-        <button class="tab-button" data-view="cozi">Cozi Events Only</button>
-      </div>
-      <div class="weekly-agenda-container">
-        <!-- Responsive grid layout for the weekly agenda -->
-        <div class="weekly-agenda-responsive">
-          <!-- Days will be dynamically generated with JavaScript -->
-        </div>
-      </div>
-    </div>
-    
-    <footer>
-      <p>Made with ❤️ for Michelle | Version 2.2</p>
-    </footer>
   </div>
   
-  <!-- Link to external JavaScript files -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/weekly-agenda.js"></script>
+  <!-- Add Family Member Modal -->
+  <div class="modal fade" id="addFamilyMemberModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Family Member</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addFamilyMemberForm">
+            <div class="mb-3">
+              <label for="memberName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="memberName" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="memberColor" class="form-label">Color</label>
+              <input type="color" class="form-control form-control-color" id="memberColor" value="#ff9baf">
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Add Member</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Notification Container -->
+  <div id="notificationContainer" class="notification-container"></div>
+  
+  <!-- Event tooltip template for calendar -->
+  <div id="eventTooltipTemplate" class="d-none">
+    <div class="event-tooltip">
+      <div class="event-tooltip-title"></div>
+      <div class="event-tooltip-time"></div>
+      <div class="event-tooltip-location"></div>
+      <div class="event-tooltip-description"></div>
+    </div>
+  </div>
+  
+  <!-- Dad-friendly view section -->
+  <div class="view-container" id="dad-friendly-view" style="display: none;">
+    <div class="dad-friendly-header">
+      <h2>Weekly Schedule</h2>
+      <div class="view-controls">
+        <button class="btn btn-primary" id="print-weekly-view">
+          <i class="fas fa-print"></i> Print Schedule
+        </button>
+        <button class="btn btn-secondary" id="refresh-weekly-view">
+          <i class="fas fa-sync"></i> Refresh
+        </button>
+      </div>
+    </div>
+    <div id="weekly-schedule-container"></div>
+  </div>
+  
+  <!-- JavaScript Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  
+  <!-- Application Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
   <script src="js/cozi-integration.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/chore-manager.js"></script>
+  <script src="js/family-manager.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/dad-friendly-view.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
