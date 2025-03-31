@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Chore Manager - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9baf, #77dd77);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Comic Sans MS', cursive;
+        }
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .logo {
+            width: 120px;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            color: #ff9baf;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        .kid-button {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .kid-button:hover {
+            transform: scale(1.05);
+        }
+        .kid-button.ember { background-color: #ff9baf; }
+        .kid-button.lilly { background-color: #77dd77; }
+        .kid-button.levi { background-color: #87ceeb; }
+        .kid-button.eva { background-color: #ffd700; }
+        .kid-button.elijah { background-color: #dda0dd; }
+        .kid-button.kallie { background-color: #ffa07a; }
+        .password-input {
+            display: none;
+            margin-top: 1rem;
+        }
+        .password-input input {
+            padding: 0.8rem;
+            font-size: 1.2rem;
+            border: 2px solid #ff9baf;
+            border-radius: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .error-message {
+            color: #ff4444;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="assets/logo.svg" alt="Family Chore Manager Logo" class="logo">
+        <h1>Welcome to Family Chore Manager!</h1>
+        <p>Who's logging in today?</p>
+        
+        <button class="kid-button ember" onclick="showPasswordInput('Ember')">Ember</button>
+        <button class="kid-button lilly" onclick="showPasswordInput('Lilly')">Lilly</button>
+        <button class="kid-button levi" onclick="showPasswordInput('Levi')">Levi</button>
+        <button class="kid-button eva" onclick="showPasswordInput('Eva')">Eva</button>
+        <button class="kid-button elijah" onclick="showPasswordInput('Elijah')">Elijah</button>
+        <button class="kid-button kallie" onclick="showPasswordInput('Kallie')">Kallie</button>
+        
+        <div class="password-input" id="passwordInput">
+            <input type="password" id="password" placeholder="Enter password" onkeypress="handlePasswordEnter(event)">
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            Oops! That's not the right password. Try again!
+        </div>
+    </div>
+
+    <script>
+        let currentUser = '';
+        const FAMILY_PASSWORD = 'Gulleyfam1';
+        
+        function showPasswordInput(user) {
+            currentUser = user;
+            document.getElementById('passwordInput').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+        }
+        
+        function handlePasswordEnter(event) {
+            if (event.key === 'Enter') {
+                const password = document.getElementById('password').value;
+                if (password === FAMILY_PASSWORD) {
+                    // Store user info in localStorage
+                    localStorage.setItem('currentUser', currentUser);
+                    localStorage.setItem('isLoggedIn', 'true');
+                    // Redirect to main app
+                    window.location.href = 'index.html';
+                } else {
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

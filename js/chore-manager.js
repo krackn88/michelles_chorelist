@@ -813,4 +813,48 @@ const choreManager = {
 document.addEventListener('DOMContentLoaded', () => {
   window.choreManager = choreManager;
   choreManager.init();
-}); 
+});
+
+/**
+ * Complete a chore
+ * @param {string} choreId - The ID of the chore to complete
+ * @param {string} completedBy - The name of the person completing the chore
+ */
+async function completeChore(choreId, completedBy) {
+    const chore = chores.find(c => c.id === choreId);
+    if (!chore) return;
+
+    // Get current user from localStorage
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+        window.utils.showNotification('Please log in to complete chores.', 'error');
+        return;
+    }
+
+    // Trigger chore completion request event
+    const event = new CustomEvent('choreCompletionRequested', {
+        detail: { chore, completedBy: currentUser }
+    });
+    document.dispatchEvent(event);
+
+    // Update UI to show pending approval
+    updateChoreUI(choreId, 'pending');
+}
+
+/**
+ * Update chore UI to show pending approval
+ * @param {string} choreId - The ID of the chore
+ * @param {string} status - The status to show (pending, approved, denied)
+ */
+function updateChoreUI(choreId, status) {
+    const choreElement = document.querySelector(`[data-chore-id="${choreId}"]`);
+    if (!choreElement) return;
+
+    const statusIndicator = choreElement.querySelector('.status-indicator');
+    if (statusIndicator) {
+        statusIndicator.innerHTML = `
+            <i class="fas fa-clock"></i>
+            <span>Waiting for parent approval...</span>
+        `;
+    }
+} 

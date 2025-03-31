@@ -1,0 +1,10 @@
+{
+  "name": "family-chore-manager-functions",
+  "version": "1.0.0",
+  "description": "Netlify functions for Family Chore Manager",
+  "main": "index.js",
+  "dependencies": {
+    "family-chore-manager-functions": "file:",
+    "twilio": "^4.19.0"
+  }
+}

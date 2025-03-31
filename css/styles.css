@@ -1282,3 +1282,100 @@ footer {
     break-after: auto;
   }
 }
+
+/* Cozi Configuration Modal */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  border-radius: var(--border-radius-lg);
+  border: none;
+  box-shadow: var(--box-shadow);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.modal-body {
+  padding: var(--spacing-lg);
+}
+
+.modal-title {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+#coziConnectionStatus {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+}
+
+#coziConnectionStatus.alert-success {
+  background-color: var(--success-color-light);
+  color: var(--success-color-dark);
+  border: 1px solid var(--success-color);
+}
+
+#coziConnectionStatus.alert-error {
+  background-color: var(--error-color-light);
+  color: var(--error-color-dark);
+  border: 1px solid var(--error-color);
+}
+
+#coziConnectionStatus.alert-info {
+  background-color: var(--info-color-light);
+  color: var(--info-color-dark);
+  border: 1px solid var(--info-color);
+}
+
+/* Cozi Form Elements */
+#coziConfigForm .form-control {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm);
+  transition: border-color var(--transition-speed) ease;
+}
+
+#coziConfigForm .form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-light);
+}
+
+#coziConfigForm .form-text {
+  color: var(--text-color-light);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+}
+
+#coziConfigForm .form-check {
+  margin-bottom: var(--spacing-sm);
+}
+
+#coziConfigForm .btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: 600;
+}
+
+#coziConfigForm .btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+#coziConfigForm .btn-secondary:hover {
+  background-color: var(--secondary-color-dark);
+  border-color: var(--secondary-color-dark);
+}
+
+#coziConfigForm .btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+#coziConfigForm .btn-primary:hover {
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+}

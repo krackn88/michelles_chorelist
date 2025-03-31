@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Chore Completion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9baf, #77dd77);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Nunito', sans-serif;
+        }
+        .approval-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        .chore-details {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        .btn-approve {
+            background-color: #77dd77;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            margin: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-deny {
+            background-color: #ff4444;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            margin: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-approve:hover, .btn-deny:hover {
+            transform: scale(1.05);
+        }
+        .status-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="approval-container">
+        <h1>Chore Completion Approval</h1>
+        <div class="chore-details" id="choreDetails">
+            Loading chore details...
+        </div>
+        <div>
+            <button class="btn-approve" onclick="handleApproval(true)">Approve</button>
+            <button class="btn-deny" onclick="handleApproval(false)">Deny</button>
+        </div>
+        <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <script>
+        // Get approval ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const approvalId = urlParams.get('id');
+
+        // Load chore details
+        function loadChoreDetails() {
+            const pendingApprovals = JSON.parse(localStorage.getItem('pendingApprovals') || '[]');
+            const approval = pendingApprovals.find(a => a.id === approvalId);
+
+            if (!approval) {
+                showStatus('Chore approval request not found or already processed.', false);
+                return;
+            }
+
+            const detailsHtml = `
+                <h3>Chore Details</h3>
+                <p><strong>Chore:</strong> ${approval.choreTitle}</p>
+                <p><strong>Completed By:</strong> ${approval.completedBy}</p>
+                <p><strong>Time:</strong> ${new Date(approval.timestamp).toLocaleString()}</p>
+            `;
+            document.getElementById('choreDetails').innerHTML = detailsHtml;
+        }
+
+        // Handle approval/denial
+        async function handleApproval(approved) {
+            try {
+                await window.parentApproval.handleApprovalResponse(approvalId, approved);
+                showStatus(
+                    approved ? 
+                        'Chore approved successfully! The child will be notified.' :
+                        'Chore denied. The child will be notified to redo the chore.',
+                    approved
+                );
+            } catch (error) {
+                showStatus('Error processing approval. Please try again.', false);
+            }
+        }
+
+        // Show status message
+        function showStatus(message, success) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${success ? 'success' : 'error'}`;
+            statusMessage.style.display = 'block';
+        }
+
+        // Load details when page loads
+        document.addEventListener('DOMContentLoaded', loadChoreDetails);
+    </script>
+</body>
+</html> 
